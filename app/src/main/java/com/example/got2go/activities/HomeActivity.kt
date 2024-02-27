@@ -11,6 +11,8 @@ import com.example.got2go.R
 import com.example.got2go.fragments.HomeFragment
 import com.example.got2go.fragments.MapFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 
 class HomeActivity : AppCompatActivity() {

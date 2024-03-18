@@ -10,7 +10,9 @@ import com.mapbox.maps.Style
 
 class MapActivity: AppCompatActivity() {
     private lateinit var mapFragment: MapFragment
-
+    // we use the layout for the activity and place a fragment content 
+    // placeholder in the xml file, Currently Style is a sensible default
+    // but we may want to add a custom style from Mapbox Studio
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
@@ -23,15 +25,17 @@ class MapActivity: AppCompatActivity() {
                 .build()
         )
     }
-
+    // a helper function to set the map to sensible defaults
+    // currently some values are hardcoded but those will get
+    // replaced by the proper data sources later
     private fun initFragmentStyle(fragmentID: Int, styleID: String, cameraOptions: CameraOptions) {
-        val fragment = supportFragmentManager.findFragmentById(fragmentID) as MapFragment
-        fragment.getMapAsync {
+        mapFragment = supportFragmentManager.findFragmentById(fragmentID) as MapFragment
+        mapFragment.getMapAsync {
             it.setCamera(cameraOptions)
             it.loadStyle(styleID)
         }
     }
-
+    // we can hold static constants in this companion object
     companion object {
         private const val LATITUDE = 33.8823
         private const val LONGITUDE = -117.92141

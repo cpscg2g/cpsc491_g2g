@@ -22,7 +22,7 @@
     <string name="home">Home</string>
     <string name="wiki">Wiki</string>
     <string name="profile">Profile</string>
-     <string name="paper">TextView</string>
+    <string name="paper">TextView</string>
     <string name="waste_categories">Waste Categories</string>
     <string name="prompt">Take a picture of the material you wish to recycle.</string>
     <string name="map">Map</string>

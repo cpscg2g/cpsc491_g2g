@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentStart="false">
@@ -45,8 +44,7 @@
         android:layout_below="@id/line2"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/edit_text_border"
-        >
+        android:background="@drawable/edit_text_border">
 
         <CheckBox
             android:id="@+id/checkbox_wheelchair_accessible"
@@ -58,14 +56,14 @@
             android:text="Wheelchair Accessible"
             android:drawableStart="@drawable/wheelchair_grey"
             android:drawablePadding="8dp"
-            android:fontFamily="@font/poppins_medium"/>
+            android:fontFamily="@font/poppins_medium" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:background="@android:color/darker_gray"/>
+            android:background="@android:color/darker_gray" />
 
         <CheckBox
             android:id="@+id/checkbox_inclusive_stall"
@@ -77,14 +75,14 @@
             android:text="Inclusive Stall"
             android:drawableStart="@drawable/inclusive_sign"
             android:drawablePadding="8dp"
-            android:fontFamily="@font/poppins_medium"/>
+            android:fontFamily="@font/poppins_medium" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:background="@android:color/darker_gray"/>
+            android:background="@android:color/darker_gray" />
 
 
         <CheckBox
@@ -97,14 +95,14 @@
             android:drawablePadding="8dp"
             android:drawableStart="@drawable/unlocked"
             android:text="No Passcode"
-            android:fontFamily="@font/poppins_medium"/>
+            android:fontFamily="@font/poppins_medium" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:background="@android:color/darker_gray"/>
+            android:background="@android:color/darker_gray" />
 
         <CheckBox
             android:layout_width="match_parent"
@@ -116,14 +114,14 @@
             android:drawablePadding="8dp"
             android:drawableStart="@drawable/pad"
             android:text="Hygiene Products"
-            android:fontFamily="@font/poppins_medium"/>
+            android:fontFamily="@font/poppins_medium" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:background="@android:color/darker_gray"/>
+            android:background="@android:color/darker_gray" />
 
         <CheckBox
             android:layout_width="match_parent"
@@ -135,14 +133,14 @@
             android:drawablePadding="8dp"
             android:drawableStart="@drawable/baby"
             android:text="Baby Changing Station"
-            android:fontFamily="@font/poppins_medium"/>
+            android:fontFamily="@font/poppins_medium" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:background="@android:color/darker_gray"/>
+            android:background="@android:color/darker_gray" />
 
         <CheckBox
             android:layout_width="match_parent"
@@ -154,14 +152,14 @@
             android:drawablePadding="8dp"
             android:drawableStart="@drawable/urinal"
             android:text="Urinal"
-            android:fontFamily="@font/poppins_medium"/>
+            android:fontFamily="@font/poppins_medium" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:background="@android:color/darker_gray"/>
+            android:background="@android:color/darker_gray" />
 
         <CheckBox
             android:layout_width="match_parent"
@@ -173,14 +171,14 @@
             android:drawablePadding="8dp"
             android:drawableStart="@drawable/single_stall_toilet"
             android:text="Single Stall Toilet"
-            android:fontFamily="@font/poppins_medium"/>
+            android:fontFamily="@font/poppins_medium" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:background="@android:color/darker_gray"/>
+            android:background="@android:color/darker_gray" />
 
         <CheckBox
             android:layout_width="match_parent"
@@ -195,15 +193,7 @@
             android:fontFamily="@font/poppins_medium" />
 
 
-
-
-
-
-
-
-
     </LinearLayout>
-
 
 
 </RelativeLayout>

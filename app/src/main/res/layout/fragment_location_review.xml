@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
-    android:layout_width="match_parent" >
+    android:layout_width="match_parent">
 
     <ImageView
         android:layout_width="234dp"
@@ -21,7 +21,7 @@
         tools:text="Location - Written Reviews"
         android:layout_below="@+id/g2gLogo3"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="-30dp"/>
+        android:layout_marginTop="-30dp" />
 
     <View
         android:id="@+id/line3"
@@ -30,8 +30,7 @@
         android:background="@android:color/darker_gray"
         android:layout_alignStart="@id/tvWrittenReviews"
         android:layout_below="@id/tvWrittenReviews"
-        android:layout_marginEnd="10dp"
-        />
+        android:layout_marginEnd="10dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -141,11 +140,6 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
-
-
-
-
 
 
 </RelativeLayout>

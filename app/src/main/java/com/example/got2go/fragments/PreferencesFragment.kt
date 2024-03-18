@@ -1,11 +1,12 @@
 package com.example.got2go.fragments
-import com.example.got2go.R
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import android.widget.CheckBox
+import androidx.fragment.app.Fragment
+import com.example.got2go.R
 
 class PreferencesFragment : Fragment() {
 
@@ -20,10 +21,9 @@ class PreferencesFragment : Fragment() {
     private lateinit var checkboxFamily: CheckBox
 
 
-
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_preferences, container, false)

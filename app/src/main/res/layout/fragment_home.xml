@@ -232,8 +232,7 @@
         android:layout_toEndOf="@id/urinal"
         android:hint="0"
         android:textAlignment="center"
-        android:inputType="number"
-        />
+        android:inputType="number" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -246,8 +245,10 @@
             android:id="@+id/pad"
             android:layout_width="49dp"
             android:layout_height="48dp"
-            android:src="@drawable/pad"/>
-        <CheckBox android:id="@+id/checkbox"
+            android:src="@drawable/pad" />
+
+        <CheckBox
+            android:id="@+id/checkbox"
             android:layout_width="48dp"
             android:layout_height="48dp" />
     </LinearLayout>

@@ -10,8 +10,10 @@ import com.example.got2go.R
 
 class DialogFragmentSample  //TODO: update fragment w/g2g stuff
     : DialogFragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_bookmark, container)
     }
 
@@ -23,7 +25,8 @@ class DialogFragmentSample  //TODO: update fragment w/g2g stuff
         dialog!!.setTitle(title)
         // Show soft keyboard automatically and request focus to field
         dialog!!.window!!.setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+            WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE
+        )
     }
 
     companion object {

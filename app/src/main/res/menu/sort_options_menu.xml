@@ -3,11 +3,11 @@
 
     <item
         android:id="@+id/sortOption1"
-        android:title="Distance"/>
+        android:title="Distance" />
 
     <item
         android:id="@+id/sortOption2"
-        android:title="Recommended"/>
+        android:title="Recommended" />
 
     <item
         android:id="@+id/sortOption3"

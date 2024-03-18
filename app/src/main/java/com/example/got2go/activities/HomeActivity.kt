@@ -11,9 +11,6 @@ import com.example.got2go.R
 import com.example.got2go.fragments.HomeFragment
 import com.example.got2go.fragments.MapFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import android.widget.EditText
-
-
 
 
 class HomeActivity : AppCompatActivity() {
@@ -28,13 +25,13 @@ class HomeActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.action_home -> {
                     supportFragmentManager.beginTransaction()
-                            .replace(R.id.flContainer, HomeFragment()).commit()
+                        .replace(R.id.flContainer, HomeFragment()).commit()
                     true
                 }
 
                 R.id.action_map -> {
                     supportFragmentManager.beginTransaction()
-                            .replace(R.id.flContainer, MapFragment()).commit()
+                        .replace(R.id.flContainer, MapFragment()).commit()
                     true
                 }
 

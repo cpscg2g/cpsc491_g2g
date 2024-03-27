@@ -19,7 +19,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         val actionBar: ActionBar? = supportActionBar
-        var bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigation)
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigation)
         bottomNavigationView.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
             val fragment: Fragment? = null
             when (item.itemId) {
@@ -39,7 +39,6 @@ class HomeActivity : AppCompatActivity() {
             }
         })
         bottomNavigationView.selectedItemId = R.id.action_home
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

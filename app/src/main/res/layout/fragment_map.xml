@@ -2,14 +2,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-
     <FrameLayout
         android:id="@+id/mapContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-
+        android:layout_height="match_parent">
+        <com.mapbox.maps.MapView
+            xmlns:mapbox="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            mapbox:mapbox_cameraTargetLat="33.8750"
+            mapbox:mapbox_cameraTargetLng="-117.8845"
+            mapbox:mapbox_cameraZoom="15.0"
+            />
+    </FrameLayout>
     <EditText
         android:id="@+id/searchBar"
         android:layout_width="373dp"
@@ -20,8 +26,6 @@
         android:background="@drawable/edit_text_border"
         android:hint=" Search Location"
         android:inputType="text" />
-
-
     <Spinner
         android:id="@+id/filterSpinner"
         android:layout_width="wrap_content"
@@ -30,8 +34,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/Pink" />
-
-
     <Button
         android:id="@+id/sortButton"
         android:layout_width="wrap_content"
@@ -40,8 +42,6 @@
         android:layout_alignEnd="@id/searchBar"
         android:layout_alignBottom="@id/filterSpinner"
         android:fontFamily="@font/poppins_medium" />
-
-
     <ImageView
         android:id="@+id/icon1"
         android:layout_width="wrap_content"
@@ -49,7 +49,6 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp" />
-
     <Button
         android:id="@+id/zoomInButton"
         android:layout_width="wrap_content"
@@ -58,7 +57,6 @@
         android:layout_centerVertical="true"
         android:layout_alignEnd="@id/sortButton"
         android:layout_marginStart="16dp" />
-
     <Button
         android:id="@+id/zoomOutButton"
         android:layout_width="wrap_content"
@@ -67,5 +65,4 @@
         android:layout_below="@id/zoomInButton"
         android:layout_alignStart="@id/zoomInButton"
         android:layout_marginTop="8dp" />
-
 </RelativeLayout>

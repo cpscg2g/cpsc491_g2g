@@ -8,12 +8,13 @@
         android:layout_height="match_parent">
         <com.mapbox.maps.MapView
             xmlns:mapbox="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/mapView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            mapbox:mapbox_cameraTargetLat="33.8750"
-            mapbox:mapbox_cameraTargetLng="-117.8845"
             mapbox:mapbox_cameraZoom="15.0"
+            mapbox:mapbox_locationComponentEnabled="true"
+            tools:context=".fragments.MapFragment"
             />
     </FrameLayout>
     <EditText
@@ -66,3 +67,5 @@
         android:layout_alignStart="@id/zoomInButton"
         android:layout_marginTop="8dp" />
 </RelativeLayout>
+<!--    mapbox:mapbox_cameraTargetLat="33.8750"-->
+<!--    mapbox:mapbox_cameraTargetLng="-117.8845"-->

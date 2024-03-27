@@ -1,7 +1,7 @@
+@file:Suppress("DEPRECATION", "OVERRIDE_DEPRECATION")
+
 package com.example.got2go.fragments
 
-import android.app.Activity
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -11,33 +11,29 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.PopupMenu
 import android.widget.Spinner
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.got2go.R
-import com.mapbox.android.core.permissions.PermissionsListener
-import com.mapbox.android.core.permissions.PermissionsManager
+import com.example.got2go.utils.LocationPermissionsHandler
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.ImageHolder
-import com.mapbox.maps.MapInitOptions
 import com.mapbox.maps.MapView
-import com.mapbox.maps.MapboxMap
 import com.mapbox.maps.Style
 import com.mapbox.maps.extension.style.expressions.dsl.generated.interpolate
 import com.mapbox.maps.plugin.LocationPuck2D
 import com.mapbox.maps.plugin.PuckBearing
 import com.mapbox.maps.plugin.animation.flyTo
-import com.mapbox.maps.plugin.locationcomponent.LocationConsumer
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
 import com.mapbox.maps.plugin.locationcomponent.location
+import java.lang.ref.WeakReference
 
-class MapFragment : Fragment(), PermissionsListener {
+class MapFragment : Fragment() {
     private lateinit var sortButton: Button
     private lateinit var filterSpinner: Spinner
 
     private lateinit var mapView: MapView
-    private lateinit var map: MapboxMap
-    private lateinit var permissionsManager: PermissionsManager
+    private var styleUri = Style.STANDARD
+
+    private lateinit var permissionsHandler: LocationPermissionsHandler
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,11 +47,15 @@ class MapFragment : Fragment(), PermissionsListener {
         super.onViewCreated(view, savedInstanceState)
 //        val btnMetal: ImageButton = view.findViewById(R.id.btnMetal)
 //        btnMetal.setOnClickListener(View.OnClickListener { showMetalDialog() })
-        checkPermissions {
-            mapView = view.findViewById(R.id.mapView)
-            map = mapView.mapboxMap
-            onMapReady()
+
+        mapView = view.findViewById(R.id.mapView)
+        permissionsHandler = LocationPermissionsHandler(WeakReference(this.requireActivity()))
+        permissionsHandler.checkPermissions {
+            mapView.apply {
+                mapboxMap.setCamera(CameraOptions.Builder().zoom(15.5).build())
+            }
         }
+        mapView.mapboxMap.loadStyle(styleUri)
 
         filterSpinner = view.findViewById(R.id.filterSpinner)
         val filterItems = listOf(
@@ -104,19 +104,30 @@ class MapFragment : Fragment(), PermissionsListener {
 
     }
 
-    private fun onMapReady() {
-        map.loadStyle(
-            Style.STANDARD
-        ) {
-            initLocationComponent()
-        }
-    }
     private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
-        map.setCamera(CameraOptions.Builder().center(it).build())
+        mapView.mapboxMap.flyTo(CameraOptions.Builder().center(it).build())
     }
-    private fun initLocationComponent(){
-        val locationComponentPlugin = mapView.location
-        locationComponentPlugin.updateSettings {
+
+    private fun showMetalDialog() {
+        val fm = fragmentManager
+        val fragmentMetal: DialogFragmentSample =
+            DialogFragmentSample.Companion.newInstance("Some Title")
+        fragmentMetal.show(fm!!, "fragment_metal")
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        permissionsHandler.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
+        mapView.location.updateSettings {
             puckBearing = PuckBearing.HEADING
             puckBearingEnabled = true
             enabled = true
@@ -128,47 +139,10 @@ class MapFragment : Fragment(), PermissionsListener {
                 }.toJson()
             )
         }
-        locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
     }
 
-    private fun showMetalDialog() {
-        val fm = fragmentManager
-        val fragmentMetal: DialogFragmentSample =
-            DialogFragmentSample.Companion.newInstance("Some Title")
-        fragmentMetal.show(fm!!, "fragment_metal")
-    }
-
-    override fun onExplanationNeeded(permissionsToExplain: List<String>) {
-        Toast.makeText(
-            this.context,
-            "You need to accept location permissions to access the restroom map.",
-            Toast.LENGTH_SHORT
-        ).show()
-    }
-
-    override fun onPermissionResult(granted: Boolean) {
-        if (granted) {
-            onMapReady()
-        } else {
-            activity?.finish()
-        }
-    }
-
-    private fun checkPermissions(onMapReady: () -> Unit) {
-        if (PermissionsManager.areLocationPermissionsGranted(this.requireContext())) {
-            onMapReady()
-        } else {
-            permissionsManager = PermissionsManager(this)
-            permissionsManager.requestLocationPermissions(this.requireActivity())
-        }
-    }
-    @Deprecated("Deprecated in Java")
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    override fun onStop() {
+        super.onStop()
+        mapView.location.removeOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
     }
 }

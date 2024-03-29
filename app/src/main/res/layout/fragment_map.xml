@@ -12,7 +12,6 @@
             android:id="@+id/mapView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            mapbox:mapbox_cameraZoom="15.0"
             mapbox:mapbox_locationComponentEnabled="true"
             tools:context=".fragments.MapFragment"
             />

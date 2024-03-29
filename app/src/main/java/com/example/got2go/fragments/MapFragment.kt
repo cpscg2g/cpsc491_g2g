@@ -2,6 +2,15 @@
 
 package com.example.got2go.fragments
 
+import com.example.got2go.R
+import com.example.got2go.utils.LocationPermissionsHandler
+// core language utilities
+import java.lang.ref.WeakReference
+// android utilities
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -11,27 +20,36 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.PopupMenu
 import android.widget.Spinner
+// jetpack compose utilities
+import androidx.annotation.DrawableRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
-import com.example.got2go.R
-import com.example.got2go.utils.LocationPermissionsHandler
+// mapbox sdk core
+import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.ImageHolder
 import com.mapbox.maps.MapView
+import com.mapbox.maps.MapboxMap
 import com.mapbox.maps.Style
+// mapbox skk extensions
 import com.mapbox.maps.extension.style.expressions.dsl.generated.interpolate
+// mapbox sdk plugins
 import com.mapbox.maps.plugin.LocationPuck2D
 import com.mapbox.maps.plugin.PuckBearing
-import com.mapbox.maps.plugin.animation.flyTo
+import com.mapbox.maps.plugin.annotation.annotations
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
+import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
 import com.mapbox.maps.plugin.locationcomponent.location
-import java.lang.ref.WeakReference
 
 class MapFragment : Fragment() {
     private lateinit var sortButton: Button
     private lateinit var filterSpinner: Spinner
 
     private lateinit var mapView: MapView
-    private var styleUri = Style.STANDARD
+    private lateinit var mapboxMap: MapboxMap
+    private lateinit var pointAnnotationManager: PointAnnotationManager
 
     private lateinit var permissionsHandler: LocationPermissionsHandler
 
@@ -48,14 +66,21 @@ class MapFragment : Fragment() {
 //        val btnMetal: ImageButton = view.findViewById(R.id.btnMetal)
 //        btnMetal.setOnClickListener(View.OnClickListener { showMetalDialog() })
 
+        // the mapview is created by inflating the layout
         mapView = view.findViewById(R.id.mapView)
+        mapboxMap = mapView.mapboxMap
+        //
         permissionsHandler = LocationPermissionsHandler(WeakReference(this.requireActivity()))
-        permissionsHandler.checkPermissions {
-            mapView.apply {
-                mapboxMap.setCamera(CameraOptions.Builder().zoom(15.5).build())
-            }
-        }
         mapView.mapboxMap.loadStyle(styleUri)
+        permissionsHandler.checkPermissions {
+            mapView.mapboxMap.apply {
+                this.setCamera(CameraOptions.Builder().zoom(DEFAULT_ZOOM).build())
+            }
+
+        }
+
+        mapView.mapboxMap.setCamera(CameraOptions.Builder().zoom(DEFAULT_ZOOM).build())
+        addAnnotationToMap(Point.fromLngLat(ECS_LONGITUDE, ECS_LATITUDE))
 
         filterSpinner = view.findViewById(R.id.filterSpinner)
         val filterItems = listOf(
@@ -97,7 +122,6 @@ class MapFragment : Fragment() {
                     else -> false
                 }
             }
-
             // Show the popup menu
             popupMenu.show()
         }
@@ -105,7 +129,7 @@ class MapFragment : Fragment() {
     }
 
     private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
-        mapView.mapboxMap.flyTo(CameraOptions.Builder().center(it).build())
+        mapView.mapboxMap.setCamera(CameraOptions.Builder().center(it).build())
     }
 
     private fun showMetalDialog() {
@@ -124,6 +148,35 @@ class MapFragment : Fragment() {
         permissionsHandler.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    private fun addAnnotationToMap(point: Point) {
+        bitmapFromDrawableRes(this.requireContext(), R.drawable.red_marker)?.let {
+            val annotationAPI = mapView.annotations
+            pointAnnotationManager = annotationAPI.createPointAnnotationManager()
+            val pointAnnotationOptions = PointAnnotationOptions()
+                .withPoint(point)
+                .withIconImage(it)
+            pointAnnotationManager.create(pointAnnotationOptions)
+        }
+    }
+
+    private fun bitmapFromDrawableRes(context: Context, @DrawableRes resourceID: Int): Bitmap? {
+        return convertDrawableToBitmap(AppCompatResources.getDrawable(context, resourceID))
+    }
+
+    private fun convertDrawableToBitmap(drawable: Drawable?): Bitmap? {
+        if (drawable == null) {
+            return null
+        }
+        val bitmap = Bitmap.createBitmap(
+            drawable.intrinsicWidth,
+            drawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+        return bitmap
+    }
     override fun onStart() {
         super.onStart()
         mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
@@ -132,7 +185,7 @@ class MapFragment : Fragment() {
             puckBearingEnabled = true
             enabled = true
             locationPuck = LocationPuck2D(
-                bearingImage = ImageHolder.from(R.drawable.remove_minus),
+                bearingImage = ImageHolder.from(R.drawable.red_marker),
                 scaleExpression = interpolate {
                     linear()
                     zoom()
@@ -144,5 +197,12 @@ class MapFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         mapView.location.removeOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
+    }
+
+    companion object {
+        const val ECS_LONGITUDE = -117.88266
+        const val ECS_LATITUDE = 33.88231
+        const val DEFAULT_ZOOM = 15.5
+        private var styleUri = Style.MAPBOX_STREETS
     }
 }

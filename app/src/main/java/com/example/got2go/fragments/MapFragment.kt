@@ -2,11 +2,6 @@
 
 package com.example.got2go.fragments
 
-import com.example.got2go.R
-import com.example.got2go.utils.LocationPermissionsHandler
-// core language utilities
-import java.lang.ref.WeakReference
-// android utilities
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -20,20 +15,25 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.PopupMenu
 import android.widget.Spinner
-// jetpack compose utilities
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
-// mapbox sdk core
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.example.got2go.R
+import com.example.got2go.map.MapMarkerManager
+import com.example.got2go.map.MapViewModel
+import com.example.got2go.map.RestroomMarkerManager
+import com.example.got2go.map.LocationPermissionsHandler
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.ImageHolder
 import com.mapbox.maps.MapView
 import com.mapbox.maps.MapboxMap
 import com.mapbox.maps.Style
-// mapbox skk extensions
 import com.mapbox.maps.extension.style.expressions.dsl.generated.interpolate
-// mapbox sdk plugins
 import com.mapbox.maps.plugin.LocationPuck2D
 import com.mapbox.maps.plugin.PuckBearing
 import com.mapbox.maps.plugin.annotation.annotations
@@ -42,6 +42,8 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
 import com.mapbox.maps.plugin.locationcomponent.location
+import kotlinx.coroutines.launch
+import java.lang.ref.WeakReference
 
 class MapFragment : Fragment() {
     private lateinit var sortButton: Button
@@ -52,12 +54,16 @@ class MapFragment : Fragment() {
     private lateinit var pointAnnotationManager: PointAnnotationManager
 
     private lateinit var permissionsHandler: LocationPermissionsHandler
+    private val mapViewModel: MapViewModel by viewModels()
+    private lateinit var restroomMarkerManager: MapMarkerManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // queue the restroom data request and store the data in the viewmodel
+
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
 
@@ -65,11 +71,25 @@ class MapFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 //        val btnMetal: ImageButton = view.findViewById(R.id.btnMetal)
 //        btnMetal.setOnClickListener(View.OnClickListener { showMetalDialog() })
+        viewLifecycleOwner.lifecycleScope.launch {
+            restroomMarkerManager = RestroomMarkerManager()
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mapViewModel.uiState.collect { uiState ->
+                    // update the map with the new restrooms
+                    uiState.restrooms.forEach { (restroomID, restroom) ->
+                        restroomMarkerManager.run {
+                            addMarker(restroomID, restroom.coordinates!!)
+                        }
+                    }
+                }
+            }
+            mapViewModel.loadRestrooms()
+        }
 
         // the mapview is created by inflating the layout
         mapView = view.findViewById(R.id.mapView)
         mapboxMap = mapView.mapboxMap
-        //
+
         permissionsHandler = LocationPermissionsHandler(WeakReference(this.requireActivity()))
         mapView.mapboxMap.loadStyle(styleUri)
         permissionsHandler.checkPermissions {
@@ -177,6 +197,7 @@ class MapFragment : Fragment() {
         drawable.draw(canvas)
         return bitmap
     }
+
     override fun onStart() {
         super.onStart()
         mapView.location.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
@@ -185,7 +206,7 @@ class MapFragment : Fragment() {
             puckBearingEnabled = true
             enabled = true
             locationPuck = LocationPuck2D(
-                bearingImage = ImageHolder.from(R.drawable.red_marker),
+                bearingImage = ImageHolder.from(R.drawable.blue_dot),
                 scaleExpression = interpolate {
                     linear()
                     zoom()

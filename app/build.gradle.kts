@@ -50,7 +50,9 @@ android {
 }
 
 dependencies {
-
+    implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation("androidx.activity:activity-ktx:1.8.2")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
@@ -63,6 +65,7 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("com.mapbox.maps:android:11.2.0")
     implementation("com.google.firebase:firebase-database-ktx:20.3.1")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.11.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

@@ -1,4 +1,4 @@
-package com.example.got2go.utils
+package com.example.got2go.map
 
 import android.app.Activity
 import android.widget.Toast

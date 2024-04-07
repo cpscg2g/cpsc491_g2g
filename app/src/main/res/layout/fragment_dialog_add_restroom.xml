@@ -1,0 +1,89 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_centerInParent="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_corner_dialog"
+    android:layout_margin="16dp"
+    android:layout_centerHorizontal="true">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="128dp"
+        android:contentDescription="@string/got2go_logo"
+        android:src="@drawable/g2gw"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:text="@string/add_restroom_dialog_title" />
+    <EditText
+        android:id="@+id/restroomName"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:background="@color/design_default_color_secondary"
+        android:textColor="@color/white"
+        android:padding="8dp"
+        android:hint="@string/restroom_name"
+        android:inputType="text"
+        android:autofillHints="@string/restroom_name" />
+
+    <EditText
+        android:id="@+id/restroomStatus"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:background="@color/design_default_color_secondary"
+        android:textColor="@color/white"
+        android:padding="8dp"
+        android:hint="@string/restroom_status"
+        android:inputType="text"
+        android:autofillHints="@string/restroom_status" />
+
+    <EditText
+        android:id="@+id/restroomAddress"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:background="@color/design_default_color_secondary"
+        android:textColor="@color/white"
+        android:padding="8dp"
+        android:hint="@string/restroom_address"
+        android:inputType="text"
+        android:autofillHints="@string/restroom_address" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/create_button"
+                android:background="@null"
+                android:contentDescription="@string/add_restroom_submit" />
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/cancel_button"
+                android:background="@null"
+                android:contentDescription="@string/add_restroom_submit" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

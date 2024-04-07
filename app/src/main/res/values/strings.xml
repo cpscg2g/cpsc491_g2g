@@ -29,6 +29,18 @@
     <string name="bookmark">Bookmark</string>
     <string name="review">Review</string>
     <string name="create_account">Create Account</string>
+    <string name="zoom_out">Zoom Out</string>
+    <string name="zoom_in">Zoom In</string>
+    <string name="sort">Sort</string>
+    <string name="search_location">Search Location</string>
+    <string name="add_restroom_button">Add Restroom Button</string>
+    <string name="restroom_name">Choose a location name</string>
+    <string name="restroom_status">open</string>
+    <string name="restroom_address">Enter the street address</string>
+    <string name="add_restroom_submit">Submit</string>
+    <string name="add_restroom_cancel">Cancel</string>
+    <string name="add_restroom_dialog_title">Create a new restroom location</string>
+    <string name="got2go_logo">The Got2Go app logo</string>
 
 
 </resources>

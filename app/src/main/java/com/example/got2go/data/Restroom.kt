@@ -2,6 +2,8 @@ package com.example.got2go.data
 
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties
+import com.mapbox.geojson.Point
+
 
 
 data class Coordinates(
@@ -19,20 +21,24 @@ data class Address(
 
 @IgnoreExtraProperties
 data class Restroom(
-    val userID: String? = "",
+    val id: String,
     var name: String? = "",
-    val address: Address? = Address("", "", "", "", ""),
-    val coordinates: Coordinates? = Coordinates(0.0, 0.0),
-    val status: String? = "open",
+    var address: Address? = Address("", "", "", "", ""),
+    var coordinates: Coordinates? = Coordinates(0.0, 0.0),
+    var status: String = "open",
 ) {
     @Exclude
     fun toMap(): Map<String, Any?> {
         return mapOf(
-            "userID" to userID,
+            "id" to id,
             "name" to name,
             "address" to address,
             "coordinates" to coordinates,
             "status" to status,
         )
+    }
+    @Exclude
+    fun toPoint(): Point? {
+        return this.coordinates?.let { Point.fromLngLat(it.longitude, it.latitude) }
     }
 }

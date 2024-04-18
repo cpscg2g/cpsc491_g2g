@@ -54,77 +54,88 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="168dp"
+            android:layout_height="225dp"
             android:layout_marginStart="16dp"
-            android:background="@drawable/edit_text_border"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/usernameTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="5sp"
-                android:text="Username"
-                android:textColor="@color/black"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <View
-                android:id="@+id/line2"
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginEnd="5dp"
-                android:background="@android:color/darker_gray" />
-
-            <TextView
-                android:id="@+id/reviewTextView"
-                android:layout_width="match_parent"
-                android:layout_height="96dp"
-                android:layout_marginTop="8dp"
-                android:paddingStart="5sp"
-                android:text="Written review"
-                android:textSize="18sp"
-                android:textStyle="italic" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginBottom="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="168dp"
                 android:background="@drawable/edit_text_border"
-                android:orientation="horizontal"
-                android:paddingStart="5dp"
-                android:paddingEnd="6dp">
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/usernameTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:paddingEnd="10dp"
-                    android:text="Category"
-                    android:textColor="@color/black" />
+                    android:paddingStart="5sp"
+                    android:text="Username"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
 
-                <RatingBar
-                    android:id="@+id/overallRatingBar"
+                <View
+                    android:id="@+id/line2"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="-5dp"
-                    android:layout_marginStart="-30dp"
-                    android:rating="0"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    android:stepSize="1"
-                    android:visibility="visible" />
+                    android:layout_height="1dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@android:color/darker_gray" />
+
+                <TextView
+                    android:id="@+id/reviewTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="96dp"
+                    android:layout_marginTop="8dp"
+                    android:paddingStart="5sp"
+                    android:text="Written review"
+                    android:textSize="18sp"
+                    android:textStyle="italic" />
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/edit_text_border"
+                    android:orientation="horizontal"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:paddingEnd="10dp"
+                        android:text="Category"
+                        android:textColor="@color/black" />
+
+                    <RatingBar
+                        android:id="@+id/overallRatingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="-5dp"
+                        android:layout_marginStart="-30dp"
+                        android:rating="0"
+                        android:scaleX="0.5"
+                        android:scaleY="0.5"
+                        android:stepSize="1"
+                        android:visibility="visible" />
+                </LinearLayout>
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/seeMoreButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="See More"
+                android:layout_marginTop="8dp"/>
+
         </LinearLayout>
+
     </LinearLayout>
-
-
-
-
-
-
 
 </RelativeLayout>

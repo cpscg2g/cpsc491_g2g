@@ -11,12 +11,19 @@ import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.RatingBar
 
-
-
 class LocationReviewsFragment : Fragment() {
 
     private lateinit var rootView: View
     private lateinit var reviewTextView: TextView
+
+    //change this later to correlate with database
+    private val ratingCategories: Map<String, Float> = mapOf(
+            "Accessibility" to 4f,
+            "Location" to 3f,
+            "Overall" to 4f,
+            "Space" to 3f,
+            "Stalls" to 2f,
+    )
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -34,36 +41,37 @@ class LocationReviewsFragment : Fragment() {
 
         val seeMoreButton: Button = rootView.findViewById(R.id.seeMoreButton)
         seeMoreButton.setOnClickListener {
-            showPopup(it)
+            // Pass ratingCategories to the showPopup function
+            showPopup(view, ratingCategories)
         }
-
     }
 
     private fun showPopup(view: View, ratingCategories: Map<String, Float>) {
-        val inflater = requireContext().getSystemService(LayoutInflater::class.java)
+        val inflater = LayoutInflater.from(requireContext())
         val popupView = inflater.inflate(R.layout.fragment_more_categories, null)
 
         val popupLayout: LinearLayout = popupView.findViewById(R.id.popupLayout)
 
-        //create and add views for each rating category, fix this later
+        //creating views for each rating category
         for ((category, rating) in ratingCategories) {
-            val categoryView = inflater.inflate(R.layout.fragment_location_review, null)
-            //val categoryNameTextView = categoryView.findViewById<TextView>(R.id.categoryRatingName)
-            //val categoryRatingBar = categoryView.findViewById<RatingBar>(R.id.categoryRatingBar)
+            val categoryView = inflater.inflate(R.layout.category_layout, null)
+            val categoryNameTextView = categoryView.findViewById<TextView>(R.id.categoryRatingName)
+            val categoryRatingBar = categoryView.findViewById<RatingBar>(R.id.categoryRatingBar)
 
-            //categoryNameTextView.text = category
-            //categoryRatingBar.rating = rating
+            categoryNameTextView.text = category
+            categoryRatingBar.rating = rating
 
             popupLayout.addView(categoryView)
         }
 
-        // Create the popup window
-        val width = ViewGroup.LayoutParams.WRAP_CONTENT
-        val height = ViewGroup.LayoutParams.WRAP_CONTENT
-        val focusable = true // Let taps outside the popup dismiss it
-        val popupWindow = PopupWindow(popupView, width, height, focusable)
+        //makes the popup window
+        val popupWindow = PopupWindow(
+                popupView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true
+        )
 
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0)
     }
-
 }

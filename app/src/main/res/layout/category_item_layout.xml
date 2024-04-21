@@ -9,13 +9,14 @@
     <TextView
         android:id="@+id/accessibilityRating"
         android:layout_width="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_height="wrap_content"
-        android:text="Accessibility"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="-25dp"
+        android:layout_weight="1"
         android:fontFamily="@font/poppins_medium"
+        android:text="Accessibility"
         android:textColor="@android:color/black"
-        android:textSize="20dp"
-        android:layout_weight="1" />
+        android:textSize="20dp" />
 
     <RatingBar
         android:id="@+id/accessibilityRatingBar"
@@ -29,4 +30,15 @@
         android:scaleX="0.5"
         android:scaleY="0.5"
         android:stepSize="1" />
+
+    <ImageButton
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/remove_minus"
+        android:contentDescription="Delete category"
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_marginTop="-15dp"
+        android:padding="8dp"
+        android:layout_gravity="center_vertical" />
 </LinearLayout>

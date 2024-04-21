@@ -9,7 +9,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <View
             android:id="@+id/line"
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/g2gLogo"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="-50dp"
+            android:layout_marginTop="-60dp"
             android:fontFamily="@font/poppins_medium"
             android:textColor="#000000"
             android:textSize="25sp"
@@ -64,7 +64,7 @@
             android:layout_alignStart="@id/tvWelcome"
             android:layout_below="@id/line"
             android:fontFamily="@font/poppins_medium"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:text="Overall"
             android:textColor="#000000"
             android:textSize="20sp" />
@@ -73,7 +73,8 @@
             android:id="@+id/overallRatingBar"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_alignBottom="@id/overallRating"
+
+            android:layout_alignTop="@id/addMore"
             android:layout_marginStart="20dp"
             android:layout_marginBottom="6dp"
             android:layout_toEndOf="@id/overallRating"
@@ -83,20 +84,12 @@
             android:stepSize="1"
             android:visibility="visible" />
 
-        <TextView
-            android:id="@+id/selectStarRating"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/line"
-            android:layout_alignEnd="@id/addMore"
-            android:fontFamily="@font/poppins_medium"
-            android:text="select star to adjust rating" />
 
         <Button
             android:id="@+id/addMore"
             android:layout_width="48dp"
             android:layout_height="65dp"
-            android:layout_below="@id/selectStarRating"
+            android:layout_below="@id/line"
             android:background="@drawable/add_more_plus"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="8dp"

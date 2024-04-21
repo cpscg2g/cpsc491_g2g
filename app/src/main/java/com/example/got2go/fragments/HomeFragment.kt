@@ -1,6 +1,5 @@
 package com.example.got2go.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,15 +11,16 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.got2go.R
 import android.app.AlertDialog
-import android.widget.NumberPicker
+import android.widget.ImageButton
 import android.widget.EditText
 import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
-
 
 
 class HomeFragment : Fragment() {
     //TODO: update fragment w/g2g stuff
+
+    //to store the names of categories that have been added
+    private val addedCategories: MutableSet<String> = mutableSetOf()
 
 
     private lateinit var quantityEditText: EditText
@@ -69,7 +69,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var btnScan: Button = view.findViewById(R.id.btnScan)
-        var overallRatingBar: RatingBar = view.findViewById(R.id.overallRatingBar)
+        val overallRatingBar: RatingBar = view.findViewById(R.id.overallRatingBar)
         var tvWelcome: TextView = view.findViewById(R.id.tvWelcome)
         tvWelcome.text = "Write a Review for Location"
         btnScan.setOnClickListener(View.OnClickListener { Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show() })
@@ -80,21 +80,44 @@ class HomeFragment : Fragment() {
     }
 
     private fun addCategory(categoryName: String) {
-        val inflater = LayoutInflater.from(requireContext())
-        val newCategoryView = inflater.inflate(R.layout.category_item_layout, categoryContainer, false)
+        if (!addedCategories.contains(categoryName)) {
+            val inflater = LayoutInflater.from(requireContext())
+            val newCategoryView = inflater.inflate(R.layout.category_item_layout, categoryContainer, false)
 
-        val categoryNameTextView = newCategoryView.findViewById<TextView>(R.id.accessibilityRating)
-        categoryNameTextView.text = categoryName
+            val categoryNameTextView = newCategoryView.findViewById<TextView>(R.id.accessibilityRating)
+            categoryNameTextView.text = categoryName
 
-        val categoryRatingBar = newCategoryView.findViewById<RatingBar>(R.id.accessibilityRatingBar)
-        // Customize the RatingBar as needed
-        categoryRatingBar.numStars = 5
-        categoryRatingBar.stepSize = 1f
-        categoryRatingBar.rating = 0f
-        categoryRatingBar.scaleX = 0.5f
-        categoryRatingBar.scaleY = 0.5f
+            val categoryRatingBar = newCategoryView.findViewById<RatingBar>(R.id.accessibilityRatingBar)
+            // Customize the RatingBar as needed
+            categoryRatingBar.numStars = 5
+            categoryRatingBar.stepSize = 1f
+            categoryRatingBar.rating = 0f
+            categoryRatingBar.scaleX = 0.5f
+            categoryRatingBar.scaleY = 0.5f
 
-        categoryContainer.addView(newCategoryView)
+            // Get reference to delete button
+            val deleteButton = newCategoryView.findViewById<ImageButton>(R.id.deleteButton)
+            deleteButton.setOnClickListener {
+                // Remove the category from the view and the set of added categories
+                categoryContainer.removeView(newCategoryView)
+                addedCategories.remove(categoryName)
+            }
+
+            val params = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            //params.gravity = Gravity.CENTER_VERTICAL
+            //deleteButton.layoutParams = params
+
+            categoryContainer.addView(newCategoryView)
+
+            // Add the category name to the set of added categories
+            addedCategories.add(categoryName)
+        } else {
+            // Category already added, show a message or handle it accordingly
+            Toast.makeText(requireContext(), "Category '$categoryName' already added", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun showCategorySelectionDialog() {

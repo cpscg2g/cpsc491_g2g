@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.got2go" />
+                  <option name="mobileSdkAppId" value="1:403177540717:android:994d8745cccff06fc6c364" />
+                  <option name="projectId" value="gtgfirebase-fa56c" />
+                  <option name="projectNumber" value="403177540717" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

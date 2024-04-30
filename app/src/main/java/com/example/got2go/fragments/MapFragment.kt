@@ -90,8 +90,6 @@ class MapFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // queue the restroom data request and store the data in the viewmodel
-
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
 
@@ -198,6 +196,7 @@ class MapFragment : Fragment() {
         addRestroomButton = view.findViewById(R.id.addRestroomButton)
         addRestroomButton.setOnClickListener {
             Toast.makeText(requireContext(), "Add Restroom Button Clicked", Toast.LENGTH_SHORT).show()
+            AddRestroomDialogFragment().show(parentFragmentManager, "addRestroomDialogFragment")
         }
     }
 

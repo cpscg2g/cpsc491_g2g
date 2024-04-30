@@ -41,7 +41,7 @@ class HomeActivity : AppCompatActivity() {
                 else -> false
             }
         })
-        bottomNavigationView.selectedItemId = R.id.action_home
+        //bottomNavigationView.selectedItemId = R.id.action_home
 
     }
 

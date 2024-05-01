@@ -1,58 +1,38 @@
 package com.example.got2go.data
 
 import com.google.firebase.Firebase
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
 import com.google.firebase.database.getValue
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
 import java.util.UUID.randomUUID
 
-class FirebaseRestroomsRepository : RestroomsRepository {
+class RestroomsRepository {
     private var database: DatabaseReference = Firebase.database.reference
-    private val restrooms = mutableMapOf<String, Restroom>()
-    override fun getNearbyRestrooms(
+    fun getNearbyRestrooms(
         coordinates: Coordinates,
         radius: Double,
         limit: Int
-    ): Flow<List<Restroom>> {
-        return callbackFlow {
-            val topRestroomsByCoordinates = database
-                .child("restrooms")
-                .orderByChild("coordinates/latitude")
-                .startAfter(coordinates.latitude - radius)
-                .endBefore(coordinates.latitude + radius)
-                .orderByChild("coordinates/longitude")
-                .startAfter(coordinates.longitude - radius)
-                .endBefore(coordinates.longitude + radius)
-                .limitToFirst(limit)
-
-            topRestroomsByCoordinates.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                for (child in snapshot.children) {
-                    val restroom = child.getValue<Restroom>()
-                    if (restroom == null) {
-                        Timber.tag(TAG).w("Restroom is null")
-                        continue
+    ): List<Restroom> {
+        val restrooms = mutableListOf<Restroom>()
+        database.child("restrooms")
+            .orderByChild("coordinates/latitude")
+            .startAt(coordinates.latitude - radius)
+            .endAt(coordinates.latitude + radius)
+            .limitToFirst(limit)
+            .get().addOnSuccessListener { result ->
+                for (data in result.children) {
+                    val restroom = data.getValue<Restroom>()
+                    if (restroom != null) {
+                        restrooms.add(restroom)
                     }
-                    restrooms[restroom.id] = restroom
-                    trySend(restrooms.values.toList()).isSuccess
                 }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Timber.tag(TAG).e(error.toException(), "Error getting restrooms")
-                    close(error.toException())
-                }
-            })
-        }
+            } .addOnFailureListener {
+                Timber.tag(TAG).e(it, "Error getting restrooms")
+            }
+        return restrooms
     }
-
-    override fun addRestroom(
+    fun addRestroom(
         name: String,
         address: Address,
         coordinates: Coordinates,
@@ -75,7 +55,7 @@ class FirebaseRestroomsRepository : RestroomsRepository {
             }
     }
 
-    override fun updateRestroomName(id: String, name: String) {
+    fun updateRestroomName(id: String, name: String) {
         database.child("restrooms").child(id).child("name").setValue(name)
             .addOnSuccessListener {
                 Timber.tag(TAG).d("Restroom name updated with ID: %s", id)
@@ -85,7 +65,7 @@ class FirebaseRestroomsRepository : RestroomsRepository {
             }
     }
 
-    override fun updateRestroomStatus(id: String, status: String) {
+    fun updateRestroomStatus(id: String, status: String) {
         database.child("restrooms").child(id).child("status").setValue(status)
             .addOnSuccessListener {
                 Timber.tag(TAG).d("Restroom status updated with ID: %s", id)
@@ -95,7 +75,7 @@ class FirebaseRestroomsRepository : RestroomsRepository {
             }
     }
 
-    override fun updateRestroomAddress(id: String, address: Address) {
+    fun updateRestroomAddress(id: String, address: Address) {
         database.child("restrooms").child(id).child("address").setValue(address)
             .addOnSuccessListener {
                 Timber.tag(TAG).d("Restroom address updated with ID: %s", id)

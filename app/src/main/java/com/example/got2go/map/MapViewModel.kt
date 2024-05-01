@@ -1,5 +1,7 @@
 package com.example.got2go.map
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -9,69 +11,54 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.got2go.data.Address
 import com.example.got2go.data.Coordinates
-import com.example.got2go.data.FirebaseRestroomsRepository
 import com.example.got2go.data.Restroom
+import com.example.got2go.data.RestroomData
 import com.example.got2go.data.RestroomsRepository
-import com.example.got2go.data.Result
-import com.example.got2go.data.asResult
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-sealed interface UiState {
-    data object Loading : UiState
-    data class Success(
-        val restrooms: List<Restroom>
-    ) : UiState
+data class UiState (
+    val restrooms: Map<String, Restroom>
+)
 
-    data class Error(
-        val throwable: Throwable?
-    ) : UiState
-}
-
-/**
- * ViewModel for the map screen.
- */
+/* ViewModel for the map screen. */
 class MapViewModel(
     private val restroomsRepository: RestroomsRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val state: SavedStateHandle
 ) : ViewModel() {
-    private val _restroomFlow = MutableStateFlow<UiState>(UiState.Loading)
-    val restroomFlow: StateFlow<UiState> = _restroomFlow.asStateFlow()
+    private val _restroomFlow = MutableStateFlow(UiState(emptyMap()))
+    val restroomFlow: StateFlow<UiState> = _restroomFlow
+    private val userCoordinates = MutableLiveData(Coordinates(0.0, 0.0))
+    val coordinates: LiveData<Coordinates> get() = userCoordinates
 
-    fun getNearbyRestrooms(coordinates: Coordinates, radius: Double, limit: Int) {
+    fun setCoordinates(latitude: Double, longitude: Double) {
+        userCoordinates.value = Coordinates(latitude, longitude)
+    }
+
+    fun getNearbyRestrooms(radius: Double? = DEFAULT_RADIUS, limit: Int? = DEFAULT_LIMIT) {
         viewModelScope.launch {
-            restroomsRepository
-                .getNearbyRestrooms(coordinates, radius, limit).asResult()
-                .collect { result ->
-                    _restroomFlow.update {
-                        when (result) {
-                            is Result.Loading -> UiState.Loading
-                            is Result.Success -> UiState.Success(result.data)
-                            is Result.Error -> UiState.Error(result.exception)
-                        }
-                    }
-                }
+            val restrooms = restroomsRepository
+                .getNearbyRestrooms(userCoordinates.value!!, radius!!, limit!!)
+            _restroomFlow.update { UiState(restrooms.associateBy { it.id!! }) }
         }
     }
 
-    fun addRestroom(name: String, address: Address, coordinates: Coordinates, status: String) {
-        viewModelScope.launch {
-            restroomsRepository.addRestroom(name, address, coordinates, status)
-        }
+    fun addRestroom(name: String, address: Address, coordinatesParam: Coordinates, status: String) {
+//        viewModelScope.launch {
+//            restroomsRepository.addRestroom(name, address, coordinatesParam, status)
+//        }
+        RestroomData.add(Restroom("9", name, address, coordinatesParam, status))
     }
 
     companion object {
-        private const val ECS_LATITUDE = 33.6405
-        private const val ECS_LONGITUDE = -117.8443
-        private const val DEFAULT_RADIUS = 0.01
+        private const val DEFAULT_RADIUS = 1.0
         private const val DEFAULT_LIMIT = 10
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val savedStateHandle = createSavedStateHandle()
-                val restroomsRepository = FirebaseRestroomsRepository()
+                val restroomsRepository = RestroomsRepository()
                 MapViewModel(restroomsRepository, savedStateHandle)
             }
         }

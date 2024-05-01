@@ -7,24 +7,24 @@ import com.mapbox.geojson.Point
 
 
 data class Coordinates(
-    val latitude: Double,
-    val longitude: Double,
+    val latitude: Double = 0.0,
+    val longitude: Double = 0.0
 )
 
 data class Address(
-    val address: String?,
-    val city: String?,
-    val state: String?,
-    val zip: String?,
-    val country: String?,
+    val address: String? = "",
+    val city: String? = "",
+    val state: String? = "",
+    val zip: String? = "",
+    val country: String? = "",
 )
 
 @IgnoreExtraProperties
 data class Restroom(
-    val id: String,
+    val id: String? ="",
     var name: String? = "",
-    var address: Address? = Address("", "", "", "", ""),
-    var coordinates: Coordinates? = Coordinates(0.0, 0.0),
+    var address: Address? = Address(),
+    var coordinates: Coordinates? = Coordinates(),
     var status: String = "open",
 ) {
     @Exclude
